@@ -72,6 +72,8 @@
     <Compile Include="Assets\HTC.UnityPlugin\StereoRendering\Scripts\StereoRenderer.cs" />
     <Compile Include="Assets\HTC.UnityPlugin\StereoRendering\Scripts\StereoRenderManager.cs" />
     <Compile Include="Assets\HTC.UnityPlugin\StereoRendering\Scripts\VRRenderEventDetector.cs" />
+    <Compile Include="Assets\Scripts\HandControllerInput.cs" />
+    <Compile Include="Assets\Scripts\HandInteraction.cs" />
     <Compile Include="Assets\Scripts\MessageCubeManager.cs" />
     <Compile Include="Assets\Scripts\VtuberController.cs" />
     <Compile Include="Assets\Scripts\YoutubeLiveController.cs" />
@@ -217,11 +219,11 @@
     <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Readme_InteractionSystem.txt" />
-    <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/kyohe/OneDrive/ドキュメント/GitHub/virtual-superchat-demo/Virtual Super Chat Demo/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/kyohe/OneDrive/ドキュメント/GitHub/virtual-superchat-demo/Virtual Super Chat Demo/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.StandardEvents">
+      <HintPath>C:/Users/kyohe/OneDrive/ドキュメント/GitHub/virtual-superchat-demo/Virtual Super Chat Demo/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity_2018_1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

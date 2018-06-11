@@ -93,7 +93,7 @@ public class YoutubeLiveController : MonoBehaviour
             // Spawn message cube.
             if (new_message_id != previous_message_id)
             {
-                Vector3 position = new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), 5, UnityEngine.Random.Range(-10.0f, 10.0f));
+                Vector3 position = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 5, UnityEngine.Random.Range(-3.0f, 3.0f));
                 GameObject messageCube = Instantiate(messageCubePrefab, position, Quaternion.identity);
                 messageCube.GetComponent<MessageCubeManager>().CreateMessage(snip, author);
             }
