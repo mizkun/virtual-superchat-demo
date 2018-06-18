@@ -1,0 +1,2 @@
+C:\Users\kyohe\OneDrive\ドキュメント\GitHub\virtual-superchat-demo\Virtual Super Chat Demo\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\kyohe\OneDrive\ドキュメント\GitHub\virtual-superchat-demo\Virtual Super Chat Demo\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache

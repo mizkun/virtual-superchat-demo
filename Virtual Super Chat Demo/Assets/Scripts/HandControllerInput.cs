@@ -23,7 +23,7 @@ public class HandControllerInput : MonoBehaviour
     void Update()
     {
         device = SteamVR_Controller.Input((int)trackedObj.index);
-        if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
+        if (device.GetPress(SteamVR_Controller.ButtonMask.Touchpad))
         {
             movementDirection = playerCam.transform.forward;
             movementDirection = new Vector3(movementDirection.x,

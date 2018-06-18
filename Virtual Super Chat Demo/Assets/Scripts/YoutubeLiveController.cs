@@ -73,11 +73,11 @@ public class YoutubeLiveController : MonoBehaviour
 
         Debug.Log(chatId);
 
-        string new_message_id = "0";
-        string previous_message_id = "1";
+        string new_message_id = "";
+        string previous_message_id = "";
 
-        string new_superchat_id = "0";
-        string previous_superchat_id = "1";
+        string new_superchat_id = "";
+        string previous_superchat_id = "";
 
         while (true)
         {
