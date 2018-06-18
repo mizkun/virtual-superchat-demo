@@ -1,0 +1,31 @@
+This project uses the following items from Poly (http://poly.google.com):
+
+Title: Bunch of roses
+Author: Suzanne Leibrick
+URL: https://poly.google.com/view/6FKGWeBG6RS
+License: Creative Commons CC-BY
+https://creativecommons.org/licenses/by/3.0/legalcode
+
+Title: MS Gundam RX-78-2
+Author: Tipatat Chennavasin
+URL: https://poly.google.com/view/0DJsmUS6rNa
+License: Creative Commons CC-BY
+https://creativecommons.org/licenses/by/3.0/legalcode
+
+Title: Octopus
+Author: Poly by Google
+URL: https://poly.google.com/view/9-b6-yqrwEe
+License: Creative Commons CC-BY
+https://creativecommons.org/licenses/by/3.0/legalcode
+
+Title: Rose
+Author: Poly by Google
+URL: https://poly.google.com/view/ckI9DnS00xZ
+License: Creative Commons CC-BY
+https://creativecommons.org/licenses/by/3.0/legalcode
+
+Title: Simple Red Flower
+Author: Andrew Thiel (Animal)
+URL: https://poly.google.com/view/dm84j1gcIOb
+License: Creative Commons CC-BY
+https://creativecommons.org/licenses/by/3.0/legalcode

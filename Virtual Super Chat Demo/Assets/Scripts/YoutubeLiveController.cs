@@ -7,17 +7,26 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
 using SimpleJSON;
-
+using UnityEngine.UI;
 
 public class YoutubeLiveController : MonoBehaviour
 {
-    public string videoId;
+    string videoId = "";
     public GameObject messageCubePrefab;
+    public string myClientId;
+    public string myClientSceret;
+    public InputField videoIdField;
+    public GameObject inputCanvas;
+
+    public GameObject[] gifts;
 
     IEnumerator Start()
     {
-        var clientId = "146007555648-l8igpuu7s320uj7ak7ovsb15bmhp42rh.apps.googleusercontent.com";
-        var clientSecret = "mFJ-Mi5__oDWdz6ZZSfphI-3";
+        // Input video Id 
+        yield return new WaitUntil(() => videoId != "");
+
+        var clientId = myClientId;
+        var clientSecret = myClientSceret;
 
         var code = "";
         LocalServer(c => code = c);
@@ -47,10 +56,13 @@ public class YoutubeLiveController : MonoBehaviour
         var json = JSON.Parse(request.downloadHandler.text);
         var token = json["access_token"].RawString();
 
+        Debug.Log(json);
         Debug.Log(token);
 
         var url = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet";
         url += "&id=" + videoId;
+
+        Debug.Log(url);
 
         var req = UnityWebRequest.Get(url);
         req.SetRequestHeader("Authorization", "Bearer " + token);
@@ -64,11 +76,14 @@ public class YoutubeLiveController : MonoBehaviour
         string new_message_id = "0";
         string previous_message_id = "1";
 
+        string new_superchat_id = "0";
+        string previous_superchat_id = "1";
+
         while (true)
         {
+            // Get Message
             url = "https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet,authorDetails";
             url += "&liveChatId=" + chatId;
-            //url += "&maxResults=1";
 
             req = UnityWebRequest.Get(url);
             req.SetRequestHeader("Authorization", "Bearer " + token);
@@ -87,7 +102,6 @@ public class YoutubeLiveController : MonoBehaviour
                 new_message_id = item.Value["id"].RawString();
                 Debug.Log(snip + ":" + author);
                 Debug.Log(new_message_id);
-
             }
 
             // Spawn message cube.
@@ -99,10 +113,65 @@ public class YoutubeLiveController : MonoBehaviour
             }
             previous_message_id = new_message_id;
             yield return new WaitForSeconds(5f);
+
+            // Get SuperChat Message
+            url = "https://www.googleapis.com/youtube/v3/superChatEvents?part=snippet&maxResults=1";
+
+            req = UnityWebRequest.Get(url);
+            req.SetRequestHeader("Authorization", "Bearer " + token);
+            yield return req.SendWebRequest();
+
+            json = JSON.Parse(req.downloadHandler.text);
+            items = json["items"];
+
+            Debug.Log(items);
+
+            long amountMicros = 0;
+
+            foreach (var item in items)
+            {
+                snip = item.Value["snippet"]["commentText"].RawString();
+                author = item.Value["snippet"]["supporterDetails"]["displayName"].RawString();
+                new_superchat_id = item.Value["id"].RawString();
+                amountMicros = long.Parse(item.Value["snippet"]["amountMicros"].RawString());
+
+                Debug.Log(snip + ":" + author);
+                Debug.Log(new_superchat_id);
+                Debug.Log(amountMicros);
+            }
+
+            if (new_superchat_id != previous_superchat_id)
+            {
+                Vector3 position = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 5, UnityEngine.Random.Range(-3.0f, 3.0f));
+                GameObject gift;
+                if (amountMicros <= 100000000)
+                {
+                    gift = Instantiate(gifts[0], position, Quaternion.identity);
+                }
+                else if (amountMicros > 100000000 && amountMicros <= 200000000)
+                {
+                    gift = Instantiate(gifts[1], position, Quaternion.identity);
+                }
+                else if (amountMicros > 200000000 && amountMicros <= 500000000)
+                {
+                    gift = Instantiate(gifts[2], position, Quaternion.identity);
+                }
+                else if (amountMicros > 500000000)
+                {
+                    gift = Instantiate(gifts[3], position, Quaternion.identity);
+                }
+                Debug.Log("New SuperChat");
+            }
+            previous_superchat_id = new_superchat_id;
+
         }
     }
 
-
+    public void videoIdReady()
+    {
+        videoId = videoIdField.text;
+        Destroy(inputCanvas);
+    }
 
     void LocalServer(Action<string> onReceive)
     {
