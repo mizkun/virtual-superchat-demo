@@ -22,9 +22,16 @@ public class YoutubeLiveController : MonoBehaviour
 
     IEnumerator Start()
     {
-        // Input video Id 
+
+        string newMessageId = "";
+        string previousMessageId = "";
+        string newSuperchatId = "";
+        string previousSuperchatId = "";
+
+        // Wait video id input.
         yield return new WaitUntil(() => videoId != "");
 
+        // Obtain token.
         var clientId = myClientId;
         var clientSecret = myClientSceret;
 
@@ -38,8 +45,6 @@ public class YoutubeLiveController : MonoBehaviour
           + "&access_type=" + "offline";
         Application.OpenURL(authUrl);
         yield return new WaitUntil(() => code != "");
-
-        Debug.Log(code);
 
         var tokenUrl = "https://www.googleapis.com/oauth2/v4/token";
         var content = new Dictionary<string, string>() {
@@ -56,13 +61,11 @@ public class YoutubeLiveController : MonoBehaviour
         var json = JSON.Parse(request.downloadHandler.text);
         var token = json["access_token"].RawString();
 
-        Debug.Log(json);
         Debug.Log(token);
 
+        // Obtain chatId.
         var url = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet";
         url += "&id=" + videoId;
-
-        Debug.Log(url);
 
         var req = UnityWebRequest.Get(url);
         req.SetRequestHeader("Authorization", "Bearer " + token);
@@ -73,15 +76,9 @@ public class YoutubeLiveController : MonoBehaviour
 
         Debug.Log(chatId);
 
-        string new_message_id = "";
-        string previous_message_id = "";
-
-        string new_superchat_id = "";
-        string previous_superchat_id = "";
-
         while (true)
         {
-            // Get Message
+            // Get Message data.
             url = "https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet,authorDetails";
             url += "&liveChatId=" + chatId;
 
@@ -99,22 +96,22 @@ public class YoutubeLiveController : MonoBehaviour
             {
                 snip = item.Value["snippet"]["displayMessage"].RawString();
                 author = item.Value["authorDetails"]["displayName"].RawString();
-                new_message_id = item.Value["id"].RawString();
+                newMessageId = item.Value["id"].RawString();
                 Debug.Log(snip + ":" + author);
-                Debug.Log(new_message_id);
+                Debug.Log(newMessageId);
             }
 
-            // Spawn message cube.
-            if (new_message_id != previous_message_id)
+            // Create message cubes.
+            if (newMessageId != previousMessageId)
             {
                 Vector3 position = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 5, UnityEngine.Random.Range(-3.0f, 3.0f));
                 GameObject messageCube = Instantiate(messageCubePrefab, position, Quaternion.identity);
                 messageCube.GetComponent<MessageCubeManager>().CreateMessage(snip, author);
             }
-            previous_message_id = new_message_id;
+            previousMessageId = newMessageId;
             yield return new WaitForSeconds(5f);
 
-            // Get SuperChat Message
+            // Get SuperChat message data.
             url = "https://www.googleapis.com/youtube/v3/superChatEvents?part=snippet&maxResults=1";
 
             req = UnityWebRequest.Get(url);
@@ -132,15 +129,12 @@ public class YoutubeLiveController : MonoBehaviour
             {
                 snip = item.Value["snippet"]["commentText"].RawString();
                 author = item.Value["snippet"]["supporterDetails"]["displayName"].RawString();
-                new_superchat_id = item.Value["id"].RawString();
+                newSuperchatId = item.Value["id"].RawString();
                 amountMicros = long.Parse(item.Value["snippet"]["amountMicros"].RawString());
-
-                Debug.Log(snip + ":" + author);
-                Debug.Log(new_superchat_id);
-                Debug.Log(amountMicros);
             }
 
-            if (new_superchat_id != previous_superchat_id)
+            // Create virtual gifts.
+            if (newSuperchatId != previousSuperchatId)
             {
                 Vector3 position = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 5, UnityEngine.Random.Range(-3.0f, 3.0f));
                 GameObject gift;
@@ -162,7 +156,7 @@ public class YoutubeLiveController : MonoBehaviour
                 }
                 Debug.Log("New SuperChat");
             }
-            previous_superchat_id = new_superchat_id;
+            previousSuperchatId = newSuperchatId;
 
         }
     }
